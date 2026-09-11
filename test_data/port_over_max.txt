@@ -1,0 +1,4 @@
+server=192.168.1.10
+port=65536
+protocol=https
+timeout=30

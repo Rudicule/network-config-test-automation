@@ -1,0 +1,4 @@
+server=999.999.999.999
+port=65536
+protocol=ftp
+timeout=301

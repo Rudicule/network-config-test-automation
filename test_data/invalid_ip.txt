@@ -1,0 +1,4 @@
+server=999.999.999.999
+port=443
+protocol=https
+timeout=30

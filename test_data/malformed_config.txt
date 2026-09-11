@@ -1,0 +1,5 @@
+server=192.168.1.10
+THIS_IS_NOT_VALID
+port=443
+protocol=https
+timeout=30
