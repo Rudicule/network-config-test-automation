@@ -24,4 +24,12 @@ jobs:
         run: g++ src/network_validator.cpp -o network_validator.exe -static
 
       - name: Run automated tests
-        run: python -m pytest -v
+        run: python -m pytest -v --junitxml=reports/test-results.xml
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-test-report
+          path: reports/test-results.xml
+

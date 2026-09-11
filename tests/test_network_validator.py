@@ -1,5 +1,31 @@
+from pathlib import Path
 import subprocess
+
 import pytest
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+VALIDATOR = PROJECT_ROOT / "network_validator.exe"
+TEST_DATA = PROJECT_ROOT / "test_data"
+
+
+@pytest.fixture
+def run_validator():
+    if not VALIDATOR.exists():
+        pytest.fail(
+            f"Validator executable not found: {VALIDATOR}"
+        )
+
+    def _run(config_file):
+        config_path = TEST_DATA / config_file
+
+        return subprocess.run(
+            [str(VALIDATOR), str(config_path)],
+            capture_output=True,
+            text=True
+        )
+
+    return _run
 
 
 @pytest.mark.parametrize(
@@ -151,15 +177,13 @@ import pytest
         ),
     ]
 )
-def test_configuration(config_file, expected_output, expected_code):
-    result = subprocess.run(
-        [
-            ".\\network_validator.exe",
-            f"test_data/{config_file}"
-        ],
-        capture_output=True,
-        text=True
-    )
+def test_configuration(
+    run_validator,
+    config_file,
+    expected_output,
+    expected_code
+):
+    result = run_validator(config_file)
 
     assert result.stdout.strip() == expected_output
     assert result.returncode == expected_code
